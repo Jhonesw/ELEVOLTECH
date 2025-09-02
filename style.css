@@ -1,0 +1,434 @@
+/*
+    =======================
+    ESTILOS GERAIS DA PÁGINA
+    =======================
+*/
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: #333;
+}
+
+/*
+    =======================
+    ESTILOS DO CABEÇALHO (HEADER)
+    =======================
+*/
+.main-header {
+    width: 100%;
+    position: relative;
+    overflow: hidden; /* Garante que o carrossel e outros elementos não vazem */
+}
+
+.header-image-container {
+    width: 100%;
+    height: auto; /* Altura da imagem do cabeçalho */
+    overflow: hidden;
+}
+
+.header-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Garante que a imagem preencha todo o container */
+}
+
+/*
+    =======================
+    ESTILOS DO CARROSSEL DE NOMES
+    =======================
+*/
+.name-carousel-container {
+    width: 100%;
+    overflow: hidden; /* Esconde o que sai da área de visualização */
+    background-color: #f4f4f4;
+    padding: 20px 0;
+}
+
+.name-carousel {
+    display: flex;
+    white-space: nowrap; /* Impede quebra de linha dos nomes */
+    /* Aplica a animação. 10s = duração, linear = velocidade constante, infinite = loop */
+    animation: scroll-names 25s linear infinite; 
+}
+
+/* Define a animação de rolagem */
+@keyframes scroll-names {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); } /* Move a metade do conteúdo para rolar de forma contínua */
+}
+
+/* Estilo para cada nome */
+.name {
+    font-size: 2.5em;
+    font-weight: bold;
+    padding-right: 20px; /* Espaço entre os nomes */
+    white-space: nowrap;
+}
+
+/* Cores específicas para cada nome */
+.name-1 { color: #FF5733; }
+.name-2 { color: #33FF57; }
+.name-3 { color: #3357FF; }
+.name-4 { color: #FF33A1; }
+.name-5 { color: #A133FF; }
+.name-6 { color: #FFD433; }
+.name-7 { color: #33FFF4; }
+.name-8 { color: #FF33F4; }
+.name-9 { color: #F4FF33; }
+.name-10 { color: #33A1FF; }
+
+/*
+    =======================
+    ESTILOS DA SEÇÃO PRINCIPAL (MAIN)
+    =======================
+*/
+.content-section {
+    padding: 50px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.content-item {
+    display: flex;
+    flex-wrap: wrap; /* Permite que os itens quebrem a linha em telas pequenas */
+    align-items: center;
+    gap: 20px;
+}
+
+.image-container, .text-container {
+    flex: 1; /* Faz com que os itens ocupem o espaço disponível */
+    min-width: 300px; /* Garante que os containers não fiquem muito pequenos */
+}
+
+.image-container img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.text-container h2 {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+/*
+    =======================
+    ESTILOS DO RODAPÉ (FOOTER)
+    =======================
+*/
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    font-size: 1.2em;
+}
+
+footer a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 5px;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+footer .fab.fa-whatsapp {
+    font-size: 1.5em;
+    vertical-align: middle;
+}
+
+/*
+    =======================
+    ESTILOS DO CHAT FIXO
+    =======================
+*/
+.chat-toggle-button {
+    position: fixed; /* Fixa o botão na tela */
+    bottom: 20px;
+    right: 20px;
+    background-color: #25D366;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 2em;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transition: transform 0.3s;
+}
+
+.chat-toggle-button:hover {
+    transform: scale(1.1);
+}
+
+.chat-popup {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 300px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    display: none; /* Inicia escondido */
+    flex-direction: column;
+    z-index: 1000;
+}
+
+.chat-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.chat-header {
+    background-color: #25D366;
+    color: white;
+    padding: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.close-chat-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+.chat-body {
+    padding: 15px;
+}
+
+#chat-message {
+    width: calc(100% - 10px);
+    resize: none;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.chat-footer {
+    padding: 10px 15px;
+    text-align: right;
+}
+
+.chat-footer button {
+    background-color: #25D366;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/*
+    =======================
+    RESPONSIVIDADE
+    =======================
+*/
+@media (max-width: 768px) {
+    .content-item {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .header-image-container {
+    width: 100%;
+    height: 100px; /* Altura da imagem do cabeçalho */
+    overflow: hidden;
+}
+}
+
+/*
+    =======================
+    ESTILOS DO POP-UP
+    =======================
+*/
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none; /* Inicia oculto */
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.popup-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    max-width: 900px;
+    width: 90%; /* Adapta a largura para 90% da tela */
+    max-height: 90vh; /* Garante que a altura não seja maior que 90% da altura da tela */
+    overflow-y: auto; /* Adiciona rolagem se o conteúdo for muito grande */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-sizing: border-box; /* Inclui padding e border no cálculo da largura/altura */
+}
+
+.close-popup-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #666;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+.close-popup-btn:hover {
+    color: #000;
+}
+
+.popup-image-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.popup-text-container h2 {
+    font-size: 2em;
+    color: #333;
+    margin-top: 0;
+}
+
+.popup-text-container p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    color: #555;
+    text-align: left;
+}
+
+.popup-buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap; /* Permite que os botões quebrem para a próxima linha */
+}
+
+.popup-buttons button,
+.popup-buttons a {
+    padding: 12px 25px;
+    font-size: 1em;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s, transform 0.3s;
+    text-align: center;
+}
+
+.saiba-mais-btn {
+    background-color: #007BFF;
+    color: #fff;
+}
+
+.saiba-mais-btn:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+#close-popup {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+#close-popup:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+}
+
+/* Media Queries para Pop-up em telas menores */
+@media (max-width: 768px) {
+    .popup-content {
+        width: 95%; /* Aumenta a largura em telas menores para melhor aproveitamento do espaço */
+        padding: 15px;
+    }
+
+    .popup-image-container {
+        display: none; /* Opcional: esconde a imagem para economizar espaço em telas muito pequenas */
+    }
+    
+    .popup-text-container p {
+        text-align: center; /* Centraliza o texto para melhor visualização em celulares */
+    }
+
+    .popup-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .popup-buttons button,
+    .popup-buttons a {
+        width: 100%;
+        margin-top: 10px;
+    }
+}
+/* Container para alinhar os botões */
+.button-container {
+    display: flex;
+    gap: 10px; /* Espaço entre os botões */
+    margin-top: 20px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+/* Estilo para o novo botão de download */
+.download-btn {
+    background-color: #007bff; /* Uma cor azul, por exemplo */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex; /* Para alinhar o ícone e o texto */
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.download-btn:hover {
+    background-color: #0056b3; /* Cor mais escura no hover */
+}
+
+.download-btn i {
+    margin-right: 8px; /* Espaço entre o ícone e o texto */
+}
+
+/* Ajustes para os botões "Saiba Mais" existentes */
+.content-section .text-container button {
+    margin-top: 0; /* Remove a margem superior para alinhar com o novo botão */
+}
+#BOTAOO{
+    background-color: #25D366;
+    height: 38PX;
+}
