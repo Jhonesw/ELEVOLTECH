@@ -56,7 +56,7 @@ body {
 /* Define a animação de rolagem */
 @keyframes scroll-names {
     0% { transform: translateX(0); }
-    100% { transform: translateX(-100%); } /* Move a metade do conteúdo para rolar de forma contínua */
+    100% { transform: translateX(-50%); } /* Move a metade do conteúdo para rolar de forma contínua */
 }
 
 /* Estilo para cada nome */
