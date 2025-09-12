@@ -372,7 +372,7 @@ footer .fab.fa-whatsapp {
     }
 
     .popup-image-container {
-        display: none; /* Opcional: esconde a imagem para economizar espaço em telas muito pequenas */
+         /* Opcional: esconde a imagem para economizar espaço em telas muito pequenas */
     }
     
     .popup-text-container p {
@@ -386,12 +386,15 @@ footer .fab.fa-whatsapp {
 
     .popup-buttons button,
     .popup-buttons a {
+        
         width: 100%;
         margin-top: 10px;
+        
     }
 }
 /* Container para alinhar os botões */
 .button-container {
+    
     display: flex;
     gap: 10px; /* Espaço entre os botões */
     margin-top: 20px;
@@ -401,6 +404,7 @@ footer .fab.fa-whatsapp {
 
 /* Estilo para o novo botão de download */
 .download-btn {
+    
     background-color: #007bff; /* Uma cor azul, por exemplo */
     color: white;
     padding: 10px 20px;
@@ -421,14 +425,17 @@ footer .fab.fa-whatsapp {
 }
 
 .download-btn i {
+    
     margin-right: 8px; /* Espaço entre o ícone e o texto */
 }
 
 /* Ajustes para os botões "Saiba Mais" existentes */
 .content-section .text-container button {
+    
     margin-top: 0; /* Remove a margem superior para alinhar com o novo botão */
 }
 #BOTAOO{
+    
     background-color: #25D366;
     height: 38PX;
 }
