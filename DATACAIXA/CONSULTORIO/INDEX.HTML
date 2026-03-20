@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Consultório 2011 - Gestão Clínica e Médica</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body { font-family: 'Open Sans', Arial, sans-serif; margin: 0; padding: 0; color: #444; line-height: 1.5; background: #fff; }
+        .container { max-width: 1140px; margin: 0 auto; padding: 0 15px; }
+        
+        header { border-bottom: 1px solid #eee; padding: 15px 0; }
+        .nav-bar { display: flex; justify-content: space-between; align-items: center; }
+        .logo img { height: 40px; }
+        .menu a { text-decoration: none; color: #333; font-weight: 600; margin-left: 20px; font-size: 14px; }
+
+        .hero { display: flex; padding: 50px 0; gap: 40px; align-items: flex-start; }
+        .hero-left { flex: 1; }
+        .hero-right { flex: 1; }
+        .hero-right h1 { font-size: 32px; color: #006699; margin: 0 0 15px; }
+        .hero-right p { font-size: 15px; text-align: justify; margin-bottom: 15px; }
+        .bullet-list { list-style: none; padding: 0; margin: 0; }
+        .bullet-list li { font-size: 14px; margin-bottom: 8px; position: relative; padding-left: 15px; }
+        .bullet-list li::before { content: "•"; position: absolute; left: 0; font-weight: bold; color: #006699; }
+
+        .detalhes { padding: 40px 0; background: #fdfdfd; }
+        .grid-tecnico { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .col-tecnica h2 { font-size: 20px; color: #006699; border-bottom: 2px solid #006699; padding-bottom: 10px; margin-bottom: 20px; }
+        .col-tecnica p { font-size: 14px; margin: 0 0 10px; color: #666; line-height: 1.8; }
+
+        .wpp-link { position: fixed; bottom: 20px; right: 20px; background: #25d366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 1000; }
+
+        @media (max-width: 900px) {
+            .hero, .grid-tecnico { flex-direction: column; grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<main class="container">
+    <section class="hero">
+        <div class="hero-left">
+            <iframe src="https://www.youtube.com/embed/U4zQUEH_r2o" frameborder="0" allowfullscreen style="width: 100%; height: 400PX;"></iframe>
+        </div>
+        <div class="hero-right">
+            <h1>Sistema Consultório 2011</h1>
+            <p>O <strong>Sistema Consultório 2011</strong> é a solução definitiva para a gestão de clínicas e consultórios médicos. Desenvolvido para oferecer agilidade no atendimento e organização total das informações dos pacientes, o software une simplicidade e robustez.</p>
+            <p>Ideal para diversas especialidades médicas, odontológicas, psicologia e fisioterapia, permitindo o controle completo desde a recepção até o faturamento de convênios.</p>
+            <ul class="bullet-list">
+                <li>Prontuário Eletrônico personalizado por especialidade.</li>
+                <li>Agenda multi-profissional inteligente e rápida.</li>
+                <li>Emissão de Guias TISS e integração com convênios.</li>
+                <li>Instalação local ou em rede para múltiplos consultórios.</li>
+                <li>Suporte técnico especializado via WhatsApp pela ElevoTech.</li>
+            </ul>
+            <div style="margin-top: 25px;">
+                <a href="#" style="background: #006699; color: white; padding: 15px 30px; text-decoration: none; font-weight: bold; border-radius: 5px;">SOLICITAR ORÇAMENTO DE INSTALAÇÃO</a>
+            </div>
+        </div>
+    </section>
+
+    <hr style="border: 0; border-top: 1px solid #eee;">
+
+    <section class="detalhes">
+        <div class="grid-tecnico">
+            <div class="col-tecnica">
+                <h2>Principais Recursos</h2>
+                <p>
+                    • <strong>Agenda Médica:</strong> Controle de horários, encaixes e confirmação de presença.<br>
+                    • <strong>Prontuário Eletrônico:</strong> Histórico completo do paciente, anamneses e evoluções.<br>
+                    • <strong>Receituário:</strong> Emissão de receitas, pedidos de exames e atestados personalizados.<br>
+                    • <strong>Faturamento TISS:</strong> Geração de arquivos XML para envio aos convênios.<br>
+                    • <strong>Módulo Odontológico:</strong> Odontograma detalhado integrado ao prontuário.<br>
+                    • <strong>Controle de Estoque:</strong> Gestão de insumos e materiais hospitalares.<br>
+                    • <strong>Segurança de Dados:</strong> Controle de acesso por usuário e níveis de permissão.<br>
+                    • <strong>Personalização:</strong> Campos editáveis para adaptar-se a qualquer especialidade.
+                </p>
+            </div>
+
+            <div class="col-tecnica">
+                <h2>Gráficos e Relatórios</h2>
+                <p>
+                    • <strong>Financeiro:</strong> Fluxo de caixa, contas a pagar/receber e extratos por período.<br>
+                    • <strong>Produção Médica:</strong> Relatórios de atendimentos por profissional e por convênio.<br>
+                    • <strong>Estatísticas de Pacientes:</strong> Gráficos de perfil demográfico e origem de encaminhamento.<br>
+                    • <strong>Análise de Glosas:</strong> Relatório para controle de faturas pagas e pendentes.<br>
+                    • <strong>Relatório de Frequência:</strong> Histórico de faltas e presenças por paciente.<br>
+                    • <strong>Gráficos Gerenciais:</strong> Visualização de faturamento mensal e crescimento da clínica.
+                </p>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="container" style="padding: 40px 0; text-align: center; border-top: 1px solid #eee; font-size: 12px; color: #999;">
+        © 2026 ElevoTech - Especialista em Instalação e Suporte de Sistemas Médicos.
+    </div>
+</footer>
+
+<a href="https://wa.me/5511981772139" class="wpp-link" target="_blank">
+    <i class="fab fa-whatsapp"></i>
+</a>
+
+</body>
+</html>

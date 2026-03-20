@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polyvan Controle de Estoque 22 - Gestão de Inventário Profissional</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body { font-family: 'Open Sans', Arial, sans-serif; margin: 0; padding: 0; color: #444; line-height: 1.5; background: #fff; }
+        .container { max-width: 1140px; margin: 0 auto; padding: 0 15px; }
+        
+        header { border-bottom: 1px solid #eee; padding: 15px 0; }
+        .nav-bar { display: flex; justify-content: space-between; align-items: center; }
+        .logo img { height: 40px; }
+        .menu a { text-decoration: none; color: #333; font-weight: 600; margin-left: 20px; font-size: 14px; }
+
+        .hero { display: flex; padding: 50px 0; gap: 40px; align-items: flex-start; }
+        .hero-left { flex: 1; }
+        .hero-right { flex: 1; }
+        .hero-right h1 { font-size: 32px; color: #003399; margin: 0 0 15px; }
+        .hero-right p { font-size: 15px; text-align: justify; margin-bottom: 15px; }
+        .bullet-list { list-style: none; padding: 0; margin: 0; }
+        .bullet-list li { font-size: 14px; margin-bottom: 8px; position: relative; padding-left: 15px; }
+        .bullet-list li::before { content: "•"; position: absolute; left: 0; font-weight: bold; color: #003399; }
+
+        .detalhes { padding: 40px 0; background: #fdfdfd; }
+        .grid-tecnico { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .col-tecnica h2 { font-size: 20px; color: #003399; border-bottom: 2px solid #003399; padding-bottom: 10px; margin-bottom: 20px; }
+        .col-tecnica p { font-size: 14px; margin: 0 0 10px; color: #666; line-height: 1.8; }
+
+        .wpp-link { position: fixed; bottom: 20px; right: 20px; background: #25d366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 1000; }
+
+        @media (max-width: 900px) {
+            .hero, .grid-tecnico { flex-direction: column; grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<main class="container">
+    <section class="hero">
+        <div class="hero-left">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/YoruxwXuXlI?si=Egb1eLrxneZ6QltG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        <div class="hero-right">
+            <h1>Sistema Polyvan Controle de Estoque 22</h1>
+            <p>O <strong>Sistema Polyvan 22</strong> é uma ferramenta robusta e intuitiva desenvolvida especificamente para o controle rigoroso de estoques e almoxarifados. Ele elimina falhas manuais e garante que você tenha a visão exata do seu patrimônio em tempo real.</p>
+            <p>Ideal para comércios, pequenas indústrias e depósitos que buscam organizar entradas, saídas, transferências e a conferência física de mercadorias com eficiência tecnológica.</p>
+            <ul class="bullet-list">
+                <li>Interface moderna e fácil de operar para usuários iniciantes.</li>
+                <li>Controle de múltiplos almoxarifados e centros de custo.</li>
+                <li>Suporte a leitura de código de barras e coletores de dados.</li>
+                <li>Geração de etiquetas personalizadas para seus produtos.</li>
+                <li>Suporte técnico especializado via WhatsApp pela ElevoTech.</li>
+            </ul>
+            <div style="margin-top: 25px;">
+                <a href="#" style="background: #003399; color: white; padding: 15px 30px; text-decoration: none; font-weight: bold; border-radius: 5px;">AGENDAR INSTALAÇÃO POLYVAN</a>
+            </div>
+        </div>
+    </section>
+
+    <hr style="border: 0; border-top: 1px solid #eee;">
+
+    <section class="detalhes">
+        <div class="grid-tecnico">
+            <div class="col-tecnica">
+                <h2>Principais Recursos</h2>
+                <p>
+                    • <strong>Gestão de Produtos:</strong> Cadastro detalhado com foto, NCM, custo e preço de venda.<br>
+                    • <strong>Entradas e Saídas:</strong> Lançamento por nota fiscal ou manual com histórico completo.<br>
+                    • <strong>Inventário Periódico:</strong> Ajuste de estoque rápido com conferência cega.<br>
+                    • <strong>Controle de Lote e Validade:</strong> Ideal para produtos perecíveis ou químicos.<br>
+                    • <strong>Impressão de Etiquetas:</strong> Gere etiquetas de gôndola ou de produtos com código de barras.<br>
+                    • <strong>Requisição de Materiais:</strong> Controle interno de retiradas por funcionário ou setor.<br>
+                    • <strong>Estoque Mínimo:</strong> Alertas automáticos para produtos que precisam de reposição.<br>
+                    • <strong>Importação de XML:</strong> Cadastre produtos automaticamente via arquivo da nota fiscal.
+                </p>
+            </div>
+
+            <div class="col-tecnica">
+                <h2>Gráficos e Relatórios</h2>
+                <p>
+                    • <strong>Movimentação Geral:</strong> Histórico de tudo o que entrou e saiu por período.<br>
+                    • <strong>Relatório de Giro de Estoque:</strong> Identifique quais itens saem mais e quais estão parados.<br>
+                    • <strong>Custo Médio e Valor em Estoque:</strong> Saiba exatamente quanto dinheiro você tem investido.<br>
+                    • <strong>Extrato de Kardex:</strong> Rastreabilidade total de um único item desde a compra até a venda.<br>
+                    • <strong>Relatórios Gerenciais:</strong> Gráficos de compras vs. vendas e evolução de saldo mensal.<br>
+                    • <strong>Curva ABC:</strong> Análise estatística dos produtos mais importantes para o seu faturamento.
+                </p>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="container" style="padding: 40px 0; text-align: center; border-top: 1px solid #eee; font-size: 12px; color: #999;">
+        © 2026 ElevoTech - Revenda e Implantação de Sistemas de Gestão.
+    </div>
+</footer>
+
+<a href="https://wa.me/5511981772139" class="wpp-link" target="_blank">
+    <i class="fab fa-whatsapp"></i>
+</a>
+
+</body>
+</html>
