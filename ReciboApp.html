@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>elevotech | Orçamento e Recibo</title>
+    <style>
+        body { font-family: sans-serif; padding: 10px; background: #f4f4f4; }
+        .documento { background: white; padding: 15px; border: 1px solid #ccc; max-width: 800px; margin: auto; overflow-x: auto; }
+        .header { text-align: center; border-bottom: 2px solid #333; margin-bottom: 15px; }
+        .header-edit input { width: 90%; border: none; border-bottom: 1px dashed #ccc; text-align: center; margin: 2px; }
+        .grid-info { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 10px; font-size: 14px; }
+        th, td { border: 1px solid #ccc; padding: 5px; text-align: left; }
+        .input-text { width: 90%; padding: 5px; box-sizing: border-box; }
+        button { padding: 10px; cursor: pointer; border: none; border-radius: 5px; color: white; background: #666; margin-top: 5px; width: 100%; }
+        
+        @media (min-width: 600px) {
+            .grid-info { grid-template-columns: 1fr 1fr; }
+            body { padding: 20px; }
+            .documento { padding: 20px; }
+        }
+        @media print { button { display: none !important; } }
+    </style>
+</head>
+<body>
+
+<div class="documento" id="areaOrcamento">
+    <div class="header">
+        <h1>ORÇAMENTO</h1>
+        <div class="header-edit">
+            <input type="text" id="nomePrestador" placeholder="Nome do Prestador">
+            <input type="text" id="enderecoPrestador" placeholder="Endereço">
+            <input type="text" id="telefonePrestador" placeholder="Telefone">
+        </div>
+    </div>
+
+    <div class="grid-info">
+        <div><strong>Pedido N°:</strong> <input type="text" id="idPedido" style="width: 60px;"></div>
+        <div><strong>Data Início:</strong> <input type="date" id="dataInicio"></div>
+        <div><strong>Cliente:</strong> <input type="text" class="input-text" id="cliente"></div>
+        <div><strong>CPF Cliente:</strong> <input type="text" class="input-text" id="cpfCliente"></div>
+        <div style="grid-column: span 1;"><strong>Endereço Cliente:</strong> <input type="text" class="input-text" id="enderecoCliente" style="width: 100%;"></div>
+    </div>
+
+    <h3>Produtos</h3>
+    <table id="tabelaProdutos">
+        <thead><tr><th>Produto</th><th>Qtd</th><th>Valor</th><th>Total</th></tr></thead>
+        <tbody id="corpoProdutos">
+            <tr>
+                <td><input type="text" class="input-text prodDesc"></td>
+                <td><input type="number" class="qtd" value="0" onchange="calc()" style="width:40px"></td>
+                <td><input type="number" class="unit" value="0" onchange="calc()" style="width:50px"></td>
+                <td class="subtotal">0.00</td>
+            </tr>
+        </tbody>
+    </table>
+    <button onclick="addRow('corpoProdutos', 'produto')">+ Adicionar Produto</button>
+
+    <h3>Serviços</h3>
+    <table id="tabelaServicos">
+        <thead><tr><th>Descrição</th><th>Valor</th></tr></thead>
+        <tbody id="corpoServicos">
+            <tr>
+                <td><input type="text" class="input-text servDesc"></td>
+                <td><input type="number" class="val-serv" value="0" onchange="calc()"></td>
+            </tr>
+        </tbody>
+    </table>
+    <button onclick="addRow('corpoServicos', 'servico')">+ Adicionar Serviço</button>
+
+    <div style="text-align: right; font-size: 1.3em; margin: 20px 0;">
+        <strong>TOTAL: R$ <span id="totalGeral">0.00</span></strong>
+    </div>
+
+    <button style="background:#555;" onclick="window.print()">BAIXAR ORÇAMENTO (PDF)</button>
+    <button style="background:#25d366;" onclick="gerarRecibo()">GERAR RECIBO</button>
+</div>
+
+<script>
+    document.getElementById('idPedido').value = localStorage.getItem('cont') || 1;
+    document.getElementById('dataInicio').valueAsDate = new Date();
+
+    function calc() {
+        let total = 0;
+        document.querySelectorAll('#corpoProdutos tr').forEach(tr => {
+            let q = parseFloat(tr.querySelector('.qtd').value) || 0;
+            let u = parseFloat(tr.querySelector('.unit').value) || 0;
+            let sub = q * u;
+            tr.querySelector('.subtotal').innerText = sub.toFixed(2);
+            total += sub;
+        });
+        document.querySelectorAll('.val-serv').forEach(i => total += parseFloat(i.value) || 0);
+        document.getElementById('totalGeral').innerText = total.toFixed(2);
+    }
+
+    function addRow(tbodyId, tipo) {
+        let tbody = document.getElementById(tbodyId);
+        if(tipo === 'produto') tbody.innerHTML += '<tr><td><input type="text" class="input-text prodDesc"></td><td><input type="number" class="qtd" value="0" onchange="calc()" style="width:40px"></td><td><input type="number" class="unit" value="0" onchange="calc()" style="width:50px"></td><td class="subtotal">0.00</td></tr>';
+        else tbody.innerHTML += '<tr><td><input type="text" class="input-text servDesc"></td><td><input type="number" class="val-serv" value="0" onchange="calc()"></td></tr>';
+    }
+
+    function gerarRecibo() {
+        const win = window.open("", "_blank", "width=800,height=800");
+        const total = document.getElementById('totalGeral').innerText;
+        let descList = [];
+        document.querySelectorAll('.prodDesc').forEach(i => { if(i.value) descList.push(i.value); });
+        document.querySelectorAll('.servDesc').forEach(i => { if(i.value) descList.push(i.value); });
+
+        win.document.write(`
+            <div id="areaRecibo" style="border: 2px solid #000; padding: 20px; font-family: sans-serif;">
+                <h2 style="text-align:center; background:#a9c5eb;">RECIBO DE PRESTAÇÃO DE SERVIÇO – PESSOA FÍSICA</h2>
+                <p>Eu, <b>${document.getElementById('nomePrestador').value}</b>, atendendo no endereço <b>${document.getElementById('enderecoPrestador').value}</b> (Tel: ${document.getElementById('telefonePrestador').value}), recebi de <b>${document.getElementById('cliente').value}</b>, residente à <b>${document.getElementById('enderecoCliente').value}</b>, CPF n° <b>${document.getElementById('cpfCliente').value}</b>, a importância de R$ ${total}, referente ao pagamento do Pedido N° <b>${document.getElementById('idPedido').value}</b>, contemplando os serviços/produtos: <b>${descList.join(', ')}</b>. O serviço teve início em ${document.getElementById('dataInicio').value} e o pagamento foi processado na data de hoje.</p>
+                <p>Local e data: São Paulo, ${new Date().toLocaleDateString()}</p>
+                <br><br>
+                <div id="campoAssinatura" style="text-align:center; width:60%; margin:auto;">
+                    <div style="height:60px; display:flex; align-items:flex-end; justify-content:center;">
+                        <img id="imgAssinatura" src="" style="max-width:100%; max-height:50px;">
+                    </div>
+                    <hr style="border-top:1px solid #000; margin: 0;">
+                    <p id="nomeAssinante" style="margin-top:5px;">Assinatura do prestador de serviço</p>
+                </div>
+                <br>
+                <button id="btnAssinar" onclick="abrirCanvas()">ASSINAR</button>
+                <div id="containerCanvas" style="display:none; text-align:center;">
+                    <input type="text" id="nomeClienteCanvas" placeholder="Nome do Cliente"><br>
+                    <canvas id="canvas" width="400" height="150" style="border:1px solid #000; touch-action:none; background:#fff;"></canvas><br>
+                    <button onclick="finalizarAssinatura()">OK / CONFIRMAR</button>
+                </div>
+                <button onclick="window.print()">BAIXAR RECIBO (PDF)</button>
+            </div>
+            <script>
+                const canvas = document.getElementById('canvas');
+                const ctx = canvas.getContext('2d');
+                let painting = false;
+                function abrirCanvas() { document.getElementById('containerCanvas').style.display = 'block'; document.getElementById('btnAssinar').style.display = 'none'; }
+                function start(e) { painting = true; draw(e); }
+                function finish() { painting = false; ctx.beginPath(); }
+                function draw(e) {
+                    if (!painting) return;
+                    const rect = canvas.getBoundingClientRect();
+                    const x = (e.clientX || (e.touches ? e.touches[0].clientX : 0)) - rect.left;
+                    const y = (e.clientY || (e.touches ? e.touches[0].clientY : 0)) - rect.top;
+                    ctx.lineWidth = 2; ctx.lineCap = 'round';
+                    ctx.lineTo(x, y); ctx.stroke(); ctx.beginPath(); ctx.moveTo(x, y);
+                }
+                function finalizarAssinatura() {
+                    document.getElementById('nomeAssinante').innerText = document.getElementById('nomeClienteCanvas').value;
+                    document.getElementById('imgAssinatura').src = canvas.toDataURL();
+                    document.getElementById('containerCanvas').style.display = 'none';
+                }
+                canvas.addEventListener('mousedown', start); canvas.addEventListener('mouseup', finish); canvas.addEventListener('mousemove', draw);
+                canvas.addEventListener('touchstart', start); canvas.addEventListener('touchend', finish); canvas.addEventListener('touchmove', draw);
+            <\/script>
+        `);
+    }
+</script>
+</body>
+</html>
+```[cite: 5, 6]

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoMarcaApp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+<div class="max-w-4xl mx-auto bg-white p-4 sm:p-6 shadow-lg min-h-screen sm:min-h-0 sm:rounded-lg">
+    <h1 class="text-xl sm:text-2xl font-bold mb-4 text-pink-700 text-center sm:text-left">VoMarcarApp</h1>´
+    <h6 class="text-xl sm:text-10xl ">Controle Total Em Um Só Lugar</h6>
+    
+    <!-- Cards de Resumo (Adicionados) -->
+    <div class="grid grid-cols-3 gap-2 mb-6" id="dashboard-resumo">
+        <button onclick="irPara('agenda', 'hoje')" class="bg-red-500 text-white p-3 rounded text-center shadow">
+            <div class="text-[10px]">Hoje</div>
+            <div class="text-lg font-bold" id="qtdHoje">0</div>
+        </button>
+        <button onclick="irPara('agenda', 'futuro')" class="bg-yellow-500 text-white p-3 rounded text-center shadow">
+            <div class="text-[10px]">Futuros</div>
+            <div class="text-lg font-bold" id="qtdFuturo">0</div>
+        </button>
+        <button onclick="irPara('financeiro', 'saldo')" class="bg-blue-600 text-white p-3 rounded text-center shadow">
+            <div class="text-[10px]">Saldo</div>
+            <div class="text-lg font-bold" id="resumoSaldo">0</div>
+        </button>
+    </div>
+
+    <!-- Menu -->
+    <div class="grid grid-cols-3 gap-2 mb-6">
+        <button onclick="show('agenda')" class="bg-blue-500 text-white py-2 px-1 rounded text-sm sm:text-base font-medium">Agenda</button>
+        <button onclick="show('cadastro')" class="bg-purple-500 text-white py-2 px-1 rounded text-sm sm:text-base font-medium">Cadastros</button>
+        <button onclick="show('financeiro')" class="bg-green-500 text-white py-2 px-1 rounded text-sm sm:text-base font-medium">Financeiro</button>
+    </div>
+
+    <!-- Seção Agenda -->
+    <div id="agenda" class="section">
+        <h2 class="font-bold mb-2 text-lg">Novo Agendamento</h2>
+        <input type="text" id="cli" placeholder="Nome Cliente" class="border p-3 w-full mb-2 rounded">
+        <div class="grid grid-cols-2 gap-2">
+            <input type="date" id="data" class="border p-3 w-full mb-2 rounded">
+            <input type="time" id="hora" class="border p-3 w-full mb-2 rounded">
+        </div>
+        <select id="servicoSelect" class="border p-3 w-full mb-2 rounded"><option value="">Selecione o Serviço</option></select>
+        <input type="text" id="whatsapp" placeholder="WhatsApp (DDD+Número)" class="border p-3 w-full mb-2 rounded">
+        <button onclick="salvarAgenda()" class="bg-pink-600 text-white py-3 w-full rounded font-bold">Salvar Agendamento</button>
+        <h3 class="mt-6 font-bold border-b pb-2">Agenda do Dia:</h3>
+        <ul id="listaAgenda" class="mt-2 space-y-2 text-sm sm:text-base"></ul>
+    </div>
+
+    <!-- Seção Cadastros -->
+    <div id="cadastro" class="section hidden">
+        <h2 class="font-bold mb-2 text-lg">Cadastrar Produto/Serviço</h2>
+        <input type="text" id="nomeItem" placeholder="Nome" class="border p-3 w-full mb-2 rounded">
+        <input type="number" id="valorItem" placeholder="Preço R$" class="border p-3 w-full mb-2 rounded">
+        <button onclick="salvarCadastro()" class="bg-purple-600 text-white py-3 w-full rounded font-bold">Salvar Item</button>
+        <h3 class="mt-6 font-bold border-b pb-2">Itens Cadastrados:</h3>
+        <ul id="listaCadastros" class="mt-2 text-sm sm:text-base"></ul>
+    </div>
+
+    <!-- Seção Financeiro -->
+    <div id="financeiro" class="section hidden">
+        <button onclick="toggleAgendamentos()" class="bg-gray-500 text-white px-4 py-2 text-sm rounded mb-4 w-full">Ver Agendamentos Pendentes</button>
+        <div id="listaAgendamentosFinanceiro" class="hidden mb-4 p-2 border bg-gray-50 rounded text-sm"></div>
+        
+        <h2 class="font-bold mb-2">Carrinho de Venda</h2>
+        <select id="selectItem" class="border p-3 w-full mb-2 rounded"><option value="">Adicionar ao Carrinho...</option></select>
+        <button onclick="adicionarAoCarrinho()" class="bg-blue-600 text-white py-3 w-full mb-4 rounded font-bold">Adicionar ao Carrinho</button>
+        
+        <div class="bg-gray-100 p-4 mb-4 rounded border text-sm sm:text-base">
+            <h3 class="font-bold">Itens no Carrinho:</h3>
+            <ul id="carrinhoItens" class="list-disc pl-4"></ul>
+            <p class="font-bold mt-2">Total: R$ <span id="totalCarrinho">0.00</span></p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 mb-4">
+            <button onclick="finalizarVenda('Pix')" class="bg-green-600 text-white py-3 rounded">Pix</button>
+            <button onclick="finalizarVenda('Dinheiro')" class="bg-green-600 text-white py-3 rounded">Dinheiro</button>
+            <button onclick="finalizarVenda('Cartão')" class="bg-green-600 text-white py-3 rounded">Cartão</button>
+            <button onclick="finalizarVenda('Crédito')" class="bg-green-600 text-white py-3 rounded">Crédito</button>
+        </div>
+        
+        <div id="areaSaldo" class="bg-gray-200 p-4 rounded font-bold text-center">Saldo Atual: R$ <span id="saldo">0.00</span></div>
+        <h3 class="mt-4 font-bold text-sm">Registro de Vendas:</h3>
+        <ul id="historicoVendas" class="text-xs mt-2 border-t pt-2 max-h-40 overflow-y-auto"></ul>
+    </div>
+</div>
+
+<script>
+    let carrinho = [];
+
+    function show(id) {
+        document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+        document.getElementById(id).classList.remove('hidden');
+    }
+
+    // Funcionalidade de Navegação/Destaque
+    function irPara(aba, tipo) {
+        show(aba);
+        if (tipo === 'hoje' || tipo === 'futuro') {
+            window.scrollTo(0, document.getElementById('agenda').offsetTop);
+            const lista = document.getElementById('listaAgenda');
+            const items = lista.getElementsByTagName('li');
+            for(let li of items) {
+                li.style.border = (tipo === 'hoje' && li.classList.contains('is-hoje')) || 
+                                  (tipo === 'futuro' && li.classList.contains('is-futuro')) 
+                                  ? `2px solid ${tipo === 'hoje' ? 'red' : 'yellow'}` : 'none';
+            }
+        } else {
+            document.getElementById('areaSaldo').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('areaSaldo').style.border = '2px solid blue';
+        }
+    }
+
+    function toggleAgendamentos() {
+        const div = document.getElementById('listaAgendamentosFinanceiro');
+        div.classList.toggle('hidden');
+        renderListaFinanceiro();
+    }
+
+    function renderListaFinanceiro() {
+        let agenda = JSON.parse(localStorage.getItem('agenda') || '[]');
+        document.getElementById('listaAgendamentosFinanceiro').innerHTML = agenda.map(i => `
+            <div class="cursor-pointer border-b p-2 hover:bg-gray-200" onclick='carregarAgendamentoNoFinanceiro(${JSON.stringify(i)})'>
+                ${i.cli} - ${i.servico}
+            </div>`).join('');
+    }
+
+    function carregarAgendamentoNoFinanceiro(item) {
+        const select = document.getElementById('selectItem');
+        for (let i = 0; i < select.options.length; i++) {
+            if (select.options[i].text.includes(item.servico)) {
+                select.selectedIndex = i;
+                break;
+            }
+        }
+        toggleAgendamentos();
+    }
+
+    function adicionarAoCarrinho() {
+        let select = document.getElementById('selectItem');
+        if(!select.value) return;
+        carrinho.push(JSON.parse(select.value));
+        renderCarrinho();
+    }
+
+    function renderCarrinho() {
+        document.getElementById('carrinhoItens').innerHTML = carrinho.map(i => `<li>${i.nome} - R$ ${i.valor}</li>`).join('');
+        document.getElementById('totalCarrinho').innerText = carrinho.reduce((a, b) => a + b.valor, 0).toFixed(2);
+    }
+
+    function finalizarVenda(forma) {
+        if(carrinho.length === 0) return alert('Carrinho vazio!');
+        let total = carrinho.reduce((a, b) => a + b.valor, 0);
+        let mov = JSON.parse(localStorage.getItem('financeiro') || '[]');
+        mov.push({ valor: total, desc: `${forma} - ${carrinho.map(i => i.nome).join(', ')}` });
+        localStorage.setItem('financeiro', JSON.stringify(mov));
+        carrinho = [];
+        renderCarrinho();
+        atualizarTudo();
+        alert('Venda finalizada via ' + forma);
+    }
+
+    function enviarWhatsApp(item) {
+        const msg = `Olá ${item.cli}. Temos um agendamento para o dia ${item.data} às ${item.hora} para ${item.servico}. Te aguardo, ok?`;
+        window.open(`https://wa.me/55${item.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    function salvarAgenda() {
+        let agenda = JSON.parse(localStorage.getItem('agenda') || '[]');
+        let select = document.getElementById('servicoSelect');
+        agenda.push({ cli: document.getElementById('cli').value, data: document.getElementById('data').value, hora: document.getElementById('hora').value, servico: select.options[select.selectedIndex].text.split(' (')[0], whatsapp: document.getElementById('whatsapp').value });
+        localStorage.setItem('agenda', JSON.stringify(agenda));
+        atualizarTudo();
+        alert('Agendado!');
+    }
+
+    function salvarCadastro() {
+        let lista = JSON.parse(localStorage.getItem('cadastros') || '[]');
+        lista.push({ nome: document.getElementById('nomeItem').value, valor: parseFloat(document.getElementById('valorItem').value) });
+        localStorage.setItem('cadastros', JSON.stringify(lista));
+        atualizarTudo();
+    }
+
+    function atualizarTudo() {
+        let cads = JSON.parse(localStorage.getItem('cadastros') || '[]');
+        let options = '<option value="">Selecione...</option>' + cads.map(i => `<option value='${JSON.stringify(i)}'>${i.nome} (R$ ${i.valor})</option>`).join('');
+        document.getElementById('servicoSelect').innerHTML = options;
+        document.getElementById('selectItem').innerHTML = options;
+        
+        let agenda = JSON.parse(localStorage.getItem('agenda') || '[]');
+        let hoje = new Date().toISOString().split('T')[0];
+        
+        // Atualiza Cards
+        document.getElementById('qtdHoje').innerText = agenda.filter(i => i.data === hoje).length;
+        document.getElementById('qtdFuturo').innerText = agenda.filter(i => i.data > hoje).length;
+        
+        document.getElementById('listaAgenda').innerHTML = agenda.map(i => {
+            let isHoje = i.data === hoje;
+            return `<li class="border-b pb-2 flex justify-between items-center text-xs sm:text-sm ${isHoje ? 'is-hoje' : 'is-futuro'}">
+                <span>${i.data} ${i.hora} - <b>${i.cli}</b> (${i.servico})</span>
+                <button onclick='enviarWhatsApp(${JSON.stringify(i)})' class="bg-green-500 text-white px-2 py-1 rounded">Zap</button>
+            </li>`;
+        }).join('');
+        
+        document.getElementById('listaCadastros').innerHTML = cads.map(i => `<li>${i.nome} - R$ ${i.valor}</li>`).join('');
+        
+        let mov = JSON.parse(localStorage.getItem('financeiro') || '[]');
+        let saldoTotal = mov.reduce((acc, curr) => acc + curr.valor, 0);
+        document.getElementById('resumoSaldo').innerText = saldoTotal.toFixed(0);
+        document.getElementById('saldo').innerText = saldoTotal.toFixed(2);
+        document.getElementById('historicoVendas').innerHTML = mov.map(m => `<li>${m.desc}: R$ ${m.valor.toFixed(2)}</li>`).join('');
+    }
+    atualizarTudo();
+</script>
+</body>
+</html>

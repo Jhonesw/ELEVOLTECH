@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alarme de Produtos Vencidos</title>
+    <style>
+        :root {
+            --primary: #4a6fa5;
+            --success: #2ec4b6;
+            --warning: #ff9f1c;
+            --danger: #e71d36;
+            --dark: #011627;
+            --light: #f6f8fa;
+            --gray: #6c757d;
+            --border: #ced4da;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        header h1 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        /* --- CONTROLE DE TELAS --- */
+        .tela {
+            display: none;
+        }
+        
+        .tela.ativa {
+            display: block;
+        }
+
+        /* --- MENU PRINCIPAL --- */
+        .menu-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 40px 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .btn-menu {
+            width: 100%;
+            max-width: 300px;
+            padding: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .btn-menu.cadastro { background-color: var(--primary); }
+        .btn-menu.cadastro:hover { background-color: #3a5a88; transform: scale(1.02); }
+        
+        .btn-menu.consulta { background-color: var(--dark); }
+        .btn-menu.consulta:hover { background-color: #0d2334; transform: scale(1.02); }
+
+        .btn-voltar {
+            background-color: var(--gray);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .btn-voltar:hover { background-color: #545b62; }
+
+        /* --- LAYOUT DO CADASTRO (COM CÂMERA) --- */
+        .cadastro-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 25px;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        @media (max-width: 768px) {
+            .cadastro-grid { grid-template-columns: 1fr; }
+        }
+
+        .form-group-vertical {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* --- MÓDULO DE MÍDIA / CÂMERA --- */
+        .camera-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #f1f3f5;
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            position: relative;
+        }
+
+        .video-container {
+            width: 100%;
+            max-width: 320px;
+            height: 240px;
+            background: #000;
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #video-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none; /* Começa oculto */
+        }
+
+        #foto-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .placeholder-camera {
+            color: #adb5bd;
+            font-size: 14px;
+            text-align: center;
+            padding: 20px;
+            position: absolute;
+        }
+
+        .camera-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .btn-action {
+            flex: 1;
+            padding: 12px;
+            font-size: 14px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            color: white;
+            text-align: center;
+        }
+        .btn-ativar { background-color: var(--primary); }
+        .btn-capturar { background-color: var(--success); display: none; }
+        .btn-recapturar { background-color: var(--gray); display: none; }
+
+        .btn-submit-cad {
+            background-color: var(--success);
+            color: white;
+            border: none;
+            padding: 15px;
+            font-weight: bold;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .btn-submit-cad:hover { background-color: #24a195; }
+
+        /* --- CONSULTA E DASHBOARD --- */
+        .dashboard {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        .card {
+            flex: 1;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            font-weight: bold;
+        }
+
+        .card.vencidos { border-top: 5px solid var(--danger); color: var(--danger); }
+        .card.alerta { border-top: 5px solid var(--warning); color: var(--warning); }
+        .card.ok { border-top: 5px solid var(--success); color: var(--success); }
+
+        /* Lista de Produtos */
+        .lista-produtos {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .produto-item {
+            display: grid;
+            grid-template-columns: auto 1.5fr 1fr 1fr 1fr auto;
+            gap: 15px;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            align-items: center;
+        }
+
+        .produto-item:last-child { border-bottom: none; }
+
+        .img-produto-lista {
+            width: 50px;
+            height: 50px;
+            border-radius: 6px;
+            object-fit: cover;
+            background: #eee;
+            border: 1px solid var(--border);
+        }
+
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .status-vencido { background-color: #ffe5e5; color: var(--danger); }
+        .status-alerta { background-color: #fff3cd; color: var(--warning); }
+        .status-bom { background-color: #e8f7f5; color: var(--success); }
+
+        .btn-deletar {
+            background-color: transparent;
+            color: #aaa;
+            border: none;
+            padding: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .btn-deletar:hover { color: var(--danger); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Minimarket & Mercearia Central</h1>
+        <p>Monitoramento e Alarme de Validade em Tempo Real</p>
+    </header>
+
+    <!-- 1. TELA: MENU PRINCIPAL -->
+    <div id="tela-menu" class="tela ativa">
+        <div class="menu-container">
+            <button class="btn-menu cadastro" onclick="mudarTela('tela-cadastro')">📦 Cadastrar Produto</button>
+            <button class="btn-menu consulta" onclick="mudarTela('tela-consulta')">🔍 Consultar Vencidos</button>
+        </div>
+    </div>
+
+    <!-- 2. TELA: CADASTRO DE PRODUTOS -->
+    <div id="tela-cadastro" class="tela">
+        <button class="btn-voltar" onclick="fecharCameraELimpar(); mudarTela('tela-menu');">← Voltar ao Menu</button>
+        
+        <div class="cadastro-grid">
+            <!-- Coluna Esquerda: Dados Textuais -->
+            <form id="form-produto" class="form-group-vertical">
+                <h3 style="color: var(--primary);">Novo Registro</h3>
+                <div>
+                    <label for="codigo">Código do Produto (SKU / EAN)</label>
+                    <input type="text" id="codigo" placeholder="Ex: 7891000123456" required>
+                </div>
+                <div>
+                    <label for="nome">Nome do Produto</label>
+                    <input type="text" id="nome" placeholder="Ex: Leite Integral 1L" required>
+                </div>
+                <div>
+                    <label for="lote">Lote / Categoria</label>
+                    <input type="text" id="lote" placeholder="Ex: Lote 45">
+                </div>
+                <div>
+                    <label for="validade">Data de Vencimento</label>
+                    <input type="date" id="validade" required>
+                </div>
+                <button type="submit" class="btn-submit-cad">Salvar no Estoque</button>
+            </form>
+
+            <!-- Coluna Direita: Módulo da Câmera Avançado -->
+            <div class="camera-box">
+                <label>Foto do Produto</label>
+                <div class="video-container">
+                    <div id="placeholder-text" class="placeholder-camera">🎥 Câmera desligada. Clique abaixo para ativar.</div>
+                    <video id="video-preview" autoplay playsinline></video>
+                    <img id="foto-preview" alt="Preview capturado">
+                </div>
+                
+                <div class="camera-controls">
+                    <button type="button" id="btn-ativar-cam" class="btn-action btn-ativar" onclick="inicializarCamera()">🔌 Ativar Câmera</button>
+                    <button type="button" id="btn-capturar" class="btn-action btn-capturar" onclick="capturarFoto()">📸 Capturar Frame</button>
+                    <button type="button" id="btn-recapturar" class="btn-action btn-recapturar" onclick="limparFotoERestartar()">🔄 Nova Foto</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. TELA: CONSULTA E DASHBOARD -->
+    <div id="tela-consulta" class="tela">
+        <button class="btn-voltar" onclick="mudarTela('tela-menu')">← Voltar ao Menu</button>
+
+        <div class="dashboard">
+            <div class="card vencidos">Vencidos: <span id="qtd-vencidos">0</span></div>
+            <div class="card alerta">Atenção (≤ 7 dias): <span id="qtd-alerta">0</span></div>
+            <div class="card ok">No Prazo: <span id="qtd-ok">0</span></div>
+        </div>
+
+        <div class="lista-produtos" id="lista-produtos">
+            <!-- Renderizado via JavaScript -->
+        </div>
+    </div>
+</div>
+
+<audio id="audio-alarme" src="data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA==" preload="auto"></audio>
+
+<script>
+    let produtos = JSON.parse(localStorage.getItem('produtos_validade')) || [];
+    let streamVideo = null;
+    let fotoBase64Global = "";
+
+    const form = document.getElementById('form-produto');
+    const listaContainer = document.getElementById('lista-produtos');
+    const video = document.getElementById('video-preview');
+    const imgPreview = document.getElementById('foto-preview');
+    const placeholderText = document.getElementById('placeholder-text');
+    
+    const btnAtivar = document.getElementById('btn-ativar-cam');
+    const btnCapturar = document.getElementById('btn-capturar');
+    const btnRecapturar = document.getElementById('btn-recapturar');
+
+    function mudarTela(idTela) {
+        document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
+        document.getElementById(idTela).classList.add('ativa');
+        
+        // Sempre limpa e desliga streams ao alternar de tela
+        fecharCameraELimpar();
+    }
+
+    // --- ENGENHARIA DA CÂMERA SOB DEMANDA ---
+    async function inicializarCamera() {
+        placeholderText.innerText = "Iniciando hardware de vídeo...";
+        try {
+            streamVideo = await navigator.mediaDevices.getUserMedia({ 
+                video: { facingMode: "environment", width: 640, height: 480 },
+                audio: false 
+            });
+            video.srcObject = streamVideo;
+            
+            // Gerenciamento visual de estados
+            placeholderText.style.display = "none";
+            imgPreview.style.display = "none";
+            video.style.display = "block";
+            
+            btnAtivar.style.display = "none";
+            btnCapturar.style.display = "block";
+            btnRecapturar.style.display = "none";
+        } catch (err) {
+            placeholderText.innerText = "Erro: Acesso à câmera negado ou indisponível.";
+            console.error("Acesso bloqueado: ", err);
+        }
+    }
+
+    function capturarFoto() {
+        if (!streamVideo) return;
+
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth || 320;
+        canvas.height = video.videoHeight || 240;
+        
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        
+        // Compressão em JPEG para não estourar o limite de tamanho do LocalStorage
+        fotoBase64Global = canvas.toDataURL('image/jpeg', 0.7);
+        
+        imgPreview.src = fotoBase64Global;
+        video.style.display = "none";
+        imgPreview.style.display = "block";
+        
+        btnCapturar.style.display = "none";
+        btnRecapturar.style.display = "block";
+
+        // Desliga o hardware da câmera imediatamente após capturar o frame (Otimização de Recursos)
+        if (streamVideo) {
+            streamVideo.getTracks().forEach(track => track.stop());
+            streamVideo = null;
+        }
+    }
+
+    function limparFotoERestartar() {
+        fotoBase64Global = "";
+        inicializarCamera(); // Reativa a câmera de forma limpa
+    }
+
+    function fecharCameraELimpar() {
+        if (streamVideo) {
+            streamVideo.getTracks().forEach(track => track.stop());
+            streamVideo = null;
+        }
+        fotoBase64Global = "";
+        
+        // Reset dos elementos visuais para o estado inicial
+        video.style.display = "none";
+        imgPreview.style.display = "none";
+        placeholderText.style.display = "block";
+        placeholderText.innerText = "🎥 Câmera desligada. Clique abaixo para ativar.";
+        
+        btnAtivar.style.display = "block";
+        btnCapturar.style.display = "none";
+        btnRecapturar.style.display = "none";
+    }
+
+    // --- LOGICA DE NOTIFICAÇÃO E TEMPO REAL ---
+    if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
+        Notification.requestPermission();
+    }
+
+    function emitirBeep() {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = 'sine';
+        osc.frequency.value = 800;
+        gain.gain.setValueAtTime(0.5, ctx.currentTime);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.3);
+    }
+
+    function atualizarPainel() {
+        localStorage.setItem('produtos_validade', JSON.stringify(produtos));
+        renderizarProdutos();
+    }
+
+    function formatarData(dataString) {
+        const [ano, mes, dia] = dataString.split('-');
+        return `${dia}/${mes}/${ano}`;
+    }
+
+    function renderizarProdutos() {
+        listaContainer.innerHTML = '';
+        const hoje = new Date();
+        hoje.setHours(0, 0, 0, 0);
+
+        let contVencidos = 0; let contAlerta = 0; let contOk = 0;
+        let dispararNotificacaoGeral = false;
+
+        produtos.sort((a, b) => new Date(a.validade) - new Date(b.validade));
+
+        produtos.forEach((prod, index) => {
+            const dataValidade = new Date(prod.validade);
+            dataValidade.setHours(24, 0, 0, 0);
+
+            const diferencaTempo = dataValidade - hoje;
+            const diferencaDias = Math.ceil(diferencaTempo / (1000 * 60 * 60 * 24));
+
+            let statusTexto = ''; let statusClasse = '';
+
+            if (diferencaDias < 0) {
+                statusTexto = `Vencido há ${Math.abs(diferencaDias)} d`;
+                statusClasse = 'status-vencido';
+                contVencidos++;
+                if (!prod.notificado) {
+                    dispararNotificacaoGeral = true;
+                    prod.notificado = true;
+                }
+            } else if (diferencaDias <= 7) {
+                statusTexto = `Vence em ${diferencaDias} d`;
+                statusClasse = 'status-alerta';
+                contAlerta++;
+            } else {
+                statusTexto = `${diferencaDias} dias`;
+                statusClasse = 'status-bom';
+                contOk++;
+            }
+
+            const imgHtml = prod.foto ? `<img src="${prod.foto}" class="img-produto-lista">` : `<div class="img-produto-lista" style="display:flex;align-items:center;justify-content:center;font-size:10px;color:#999;background:#e9ecef">Sem foto</div>`;
+
+            const item = document.createElement('div');
+            item.className = 'produto-item';
+            item.innerHTML = `
+                <div>${imgHtml}</div>
+                <div><strong>${prod.nome}</strong><br><small style="color:#777">Cod: ${prod.codigo}</small></div>
+                <div><small style="color:#777">${prod.lote || 'Sem lote'}</small></div>
+                <div>${formatarData(prod.validade)}</div>
+                <div><span class="status-badge ${statusClasse}">${statusTexto}</span></div>
+                <div><button class="btn-deletar" onclick="removerProduto(${index})">&times;</button></div>
+            `;
+            listaContainer.appendChild(item);
+        });
+
+        document.getElementById('qtd-vencidos').innerText = contVencidos;
+        document.getElementById('qtd-alerta').innerText = contAlerta;
+        document.getElementById('qtd-ok').innerText = contOk;
+
+        if (dispararNotificacaoGeral) {
+            executarAlarme();
+        }
+    }
+
+    function ejecutarAlarme() {
+        emitirBeep();
+        if (Notification.permission === 'granted') {
+            new Notification("Alerta de Validade!", {
+                body: "Novos produtos atingiram o vencimento. Verifique o painel!",
+                icon: "https://cdn-icons-png.flaticon.com/512/564/564619.png"
+            });
+        }
+    }
+
+    // Evento de Submissão
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const codigo = document.getElementById('codigo').value;
+        const nome = document.getElementById('nome').value;
+        const lote = document.getElementById('lote').value;
+        const validade = document.getElementById('validade').value;
+
+        produtos.push({
+            codigo,
+            nome,
+            lote,
+            validade,
+            foto: fotoBase64Global,
+            notificado: false
+        });
+
+        atualizarPainel();
+        form.reset();
+        fecharCameraELimpar();
+        
+        alert("Produto registrado com sucesso!");
+        mudarTela('tela-menu');
+    });
+
+    window.removerProduto = function(index) {
+        if(confirm("Deseja remover este item do inventário?")) {
+            produtos.splice(index, 1);
+            atualizarPainel();
+        }
+    };
+
+    setInterval(renderizarProdutos, 30000);
+    renderizarProdutos();
+</script>
+
+</body>
+</html>
